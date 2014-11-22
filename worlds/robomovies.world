@@ -22,12 +22,27 @@
     <!-- Robomovies field -->
     <include>
       <uri>model://robomovies</uri>
-      <pose>0 0 0.01 0 0 0</pose>
+      <pose>1.5 -1 0.01 0 0 -1.5707</pose>
     </include>
+    <!-- Robomovies Arena in 3D -->
+    <model name="robomovies_relief">
+      <pose>0 0 0  0 0 0</pose>
+      <static>true</static>
+      <link name="body">
+        <visual name="visual">
+          <geometry>
+            <mesh>
+		<scale>0.001 0.001 0.001</scale>
+		<uri>file://robomovies.dae</uri></mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
     <!-- Rosebot -->
     <include>
 	<uri>model://rosebot</uri>
-	<pose>0 -1.25 0.02 0 0 -1.57</pose>
+	<pose>0.2 -1 0.02 0 0 0</pose>
+	<plugin name="rosebot_control" filename="plugins/librosebot_control.so"/>
     </include>
     <physics type='ode'>
       <max_step_size>0.001</max_step_size>
@@ -41,7 +56,6 @@
       <background>0.7 0.7 0.7 1</background>
       <shadows>1</shadows>
     </scene>
-    </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
         <pose>4.17197 -4.54666 1.58688 -1.42936e-17 0.241797 2.3802</pose>

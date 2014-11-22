@@ -11,7 +11,7 @@ material Robomovies/Floor
       texture_unit
       {
         scale 1 1
-        texture robomovies.png
+        texture robomovies.jpg
         filtering trilinear
       }
     }
