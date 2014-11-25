@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-  <model name="piedjaune">
+  <model name="pied jaune">
 	<link name="link">
-           <inertial>
-	<mass>.39</mass>
+        <inertial>
+	<mass>.2</mass>
           <inertia>
             <ixx>0.00058</ixx>
             <ixy>0</ixy>

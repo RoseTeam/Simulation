@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-  <model name="Robomovies">
+  <model name="arene">
     <static>true</static>
-    <link name="field">
-      <pose>0 0 0.01 0 0 0</pose>
+    <link name="sol">
+      <pose>1.5 -1 0.001 0 0 -1.5707</pose>
       <collision name="collision">
         <geometry>
           <plane>
@@ -18,9 +18,13 @@
               <mu2>50</mu2>
             </ode>
           </friction>
+          <contact>
+              <ode/>
+          </contact>
+          <bounce/>
         </surface>
       </collision>
-      <visual name="floor">
+      <visual name="visual">
         <cast_shadows>false</cast_shadows>
         <geometry>
           <plane>
@@ -37,5 +41,33 @@
         </material>
       </visual>
     </link>
+    <!-- Robomovies Arena in 3D -->
+      <link name="relief">
+        <collision name="collision">
+          <geometry>
+            <mesh>
+		<scale>0.001 0.001 0.001</scale>
+		<uri>file://models/robomovies/meshes/table.dae</uri>
+            </mesh>
+          </geometry>
+	<surface>
+	  <friction>
+	    <ode>
+	      <mu>100</mu>
+	      <mu2>50</mu2>
+	    </ode>
+	  </friction>
+	</surface>
+	</collision>
+	<visual name="visual">
+          <geometry>
+            <mesh>
+		<scale>0.001 0.001 0.001</scale>
+		<uri>file://models/robomovies/meshes/table.dae</uri>
+	    </mesh>
+          </geometry>
+        </visual>
+	
+      </link>
   </model>
-</sdf>
+ </sdf>

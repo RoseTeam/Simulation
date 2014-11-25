@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-  <model name="piedjaune">
+  <model name="pied vert">
 	<link name="link">
-           <inertial>
-	<mass>.39</mass>
+	<inertial>
+	<mass>.2</mass>
           <inertia>
             <ixx>0.00058</ixx>
             <ixy>0</ixy>
@@ -13,11 +13,11 @@
             <izz>0.00019</izz>
           </inertia>
         </inertial>
-	<collision name="collision">
+ 	<collision name="collision">
 	  <geometry>
 	    <mesh>
 		<scale>0.001 0.001 0.001</scale>
-		<uri>file://models/piedjaune/meshes/pied.dae</uri>
+		<uri>file://models/piedvert/meshes/pied.dae</uri>
 	    </mesh>
 	  </geometry>
 	</collision>
@@ -25,7 +25,7 @@
 	  <geometry>
 	    <mesh>
 		<scale>0.001 0.001 0.001</scale>
-		<uri>file://models/piedjaune/meshes/pied.dae</uri>
+		<uri>file://models/piedvert/meshes/pied.dae</uri>
 	    </mesh>
 	  </geometry>
         <material>

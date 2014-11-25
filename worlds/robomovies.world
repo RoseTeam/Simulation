@@ -13,37 +13,247 @@
     </scene>
     <!-- A global light source -->
     <include>
+      <name>soleil</name>
       <uri>model://sun</uri>
     </include>
     <!-- Ground -->
     <include>
+      <name>terre</name>
       <uri>model://ground_plane</uri>
     </include>
     <!-- Robomovies field -->
     <include>
+      <name>arene</name>
       <uri>model://robomovies</uri>
-      <pose>1.5 -1 0.01 0 0 -1.5707</pose>
     </include>
-    <!-- Robomovies Arena in 3D -->
-    <model name="robomovies_relief">
-      <pose>0 0 0  0 0 0</pose>
-      <static>true</static>
-      <link name="body">
-        <visual name="visual">
-          <geometry>
-            <mesh>
-		<scale>0.001 0.001 0.001</scale>
-		<uri>file://robomovies.dae</uri></mesh>
-          </geometry>
-        </visual>
-      </link>
-    </model>
+
     <!-- Rosebot -->
     <include>
+	<name>rosebot1</name>
+	<pose>0.25 -1 0 0 0 0</pose>
 	<uri>model://rosebot</uri>
-	<pose>0.2 -1 0.02 0 0 0</pose>
-	<plugin name="rosebot_control" filename="plugins/librosebot_control.so"/>
     </include>
+
+
+    <!-- Gobelet -->
+    <include>
+	<name>gobelet1</name>
+	<pose>0.25 -1.75 0 0 0 0</pose>
+	<uri>model://gobelet</uri>
+    </include>
+    <!-- Gobelet -->
+    <include>
+	<name>gobelet2</name>
+	<pose>0.91 -.8 0 0 0 0</pose>
+	<uri>model://gobelet</uri>
+    </include>
+    <!-- Gobelet -->
+    <include>
+	<name>gobelet3</name>
+	<pose>1.5 -1.65 0 0 0 0</pose>
+	<uri>model://gobelet</uri>
+    </include>
+    <!-- Gobelet -->
+    <include>
+	<name>gobelet4</name>
+	<pose>2.09 -.8 0 0 0 0</pose>
+	<uri>model://gobelet</uri>
+    </include>
+    <!-- Gobelet -->
+    <include>
+	<name>gobelet5</name>
+	<pose>2.75 -1.75 0 0 0 0</pose>
+	<uri>model://gobelet</uri>
+    </include>
+
+    <!-- Recharge Popcorn distributeurs -->
+    <include>
+	<name>recharge1</name>
+	<pose>.3 -0.035 0.17 0 0 0</pose>
+	<uri>model://popcornx5</uri>
+    </include>
+    <include>
+	<name>recharge2</name>
+	<pose>.6 -0.035 0.17 0 0 0</pose>
+	<uri>model://popcornx5</uri>
+    </include>
+    <include>
+	<name>recharge3</name>
+	<pose>2.4 -0.035 0.17 0 0 0</pose>
+	<uri>model://popcornx5</uri>
+    </include>
+    <include>
+	<name>recharge4</name>
+	<pose>2.7 -0.035 0.17 0 0 0</pose>
+	<uri>model://popcornx5</uri>
+    </include>
+
+    <!-- Clap Jaune -->
+    <include>
+	<name>clap_jaune1</name>
+	<pose>.250 -2.015 .1 0 -1.91 0</pose>
+	<uri>model://clap_jaune</uri>
+    </include>
+    <!-- Clap Jaune -->
+    <include>
+	<name>clap_jaune1</name>
+	<pose>.850 -2.015 .1 0 -1.91 0</pose>
+	<uri>model://clap_jaune</uri>
+    </include>
+    <!-- Clap Jaune -->
+    <include>
+	<name>clap_jaune1</name>
+	<pose>2.450 -2.015 .1 0 -1.91 3.1415</pose>
+	<uri>model://clap_jaune</uri>
+    </include>
+
+    <!-- Clap Vert -->
+    <include>
+	<name>clap_vert1</name>
+	<pose>2.750 -2.015 .1 0 -1.91 3.1415</pose>
+	<uri>model://clap_vert</uri>
+    </include>
+    <!-- Clap Vert -->
+    <include>
+	<name>clap_vert2</name>
+	<pose>2.150 -2.015 .1 0 -1.91 3.1415</pose>
+	<uri>model://clap_vert</uri>
+    </include>
+    <!-- Clap Vert -->
+    <include>
+	<name>clap_vert3</name>
+	<pose>0.550 -2.015 .1 0 -1.91 0.</pose>
+	<uri>model://clap_vert</uri>
+    </include>
+
+
+    <!-- PiedJaune -->
+    <include>
+	<name>piedjaune1</name>
+	<pose>.09 -.2 0 0 0 0</pose>
+	<uri>model://piedjaune</uri>
+    </include>
+    <!-- PiedJaune -->
+    <include>
+	<name>piedjaune2</name>
+	<pose>0.09 -1.85 0 0 0 0</pose>
+	<uri>model://piedjaune</uri>
+    </include>
+    <!-- PiedJaune -->
+    <include>
+	<name>piedjaune3</name>
+	<pose>0.09 -1.75 0 0 0 0</pose>
+	<uri>model://piedjaune</uri>
+    </include>
+    <!-- PiedJaune -->
+    <include>
+	<name>piedjaune4</name>
+	<pose>0.85 -0.1 0 0 0 0</pose>
+	<uri>model://piedjaune</uri>
+    </include>
+    <!-- PiedJaune -->
+    <include>
+	<name>piedjaune5</name>
+	<pose>0.85 -0.2 0 0 0 0</pose>
+	<uri>model://piedjaune</uri>
+    </include>
+    <!-- PiedJaune -->
+    <include>
+	<name>piedjaune6</name>
+	<pose>0.87 -1.355 0 0 0 0</pose>
+	<uri>model://piedjaune</uri>
+    </include>
+    <!-- PiedJaune -->
+    <include>
+	<name>piedjaune7</name>
+	<pose>1.3 -1.4 0 0 0 0</pose>
+	<uri>model://piedjaune</uri>
+    </include>
+    <!-- PiedJaune -->
+    <include>
+	<name>piedjaune8</name>
+	<pose>1.1 -1.77 0 0 0 0</pose>
+	<uri>model://piedjaune</uri>
+    </include>
+
+
+    <!-- PiedVert -->
+    <include>
+	<name>piedvert1</name>
+	<pose>2.91 -.2 0 0 0 0</pose>
+	<uri>model://piedvert</uri>
+    </include>
+    <!-- PiedVert -->
+    <include>
+	<name>piedvert2</name>
+	<pose>2.91 -1.85 0 0 0 0</pose>
+	<uri>model://piedvert</uri>
+    </include>
+    <!-- PiedVert -->
+    <include>
+	<name>piedvert3</name>
+	<pose>2.91 -1.75 0 0 0 0</pose>
+	<uri>model://piedvert</uri>
+    </include>
+    <!-- PiedVert -->
+    <include>
+	<name>piedvert4</name>
+	<pose>2.15 -0.1 0 0 0 0</pose>
+	<uri>model://piedvert</uri>
+    </include>
+    <!-- PiedVert -->
+    <include>
+	<name>piedvert5</name>
+	<pose>2.15 -0.2 0 0 0 0</pose>
+	<uri>model://piedvert</uri>
+    </include>
+    <!-- PiedVert -->
+    <include>
+	<name>piedvert6</name>
+	<pose>2.13 -1.355 0 0 0 0</pose>
+	<uri>model://piedvert</uri>
+    </include>
+    <!-- PiedVert -->
+    <include>
+	<name>piedvert7</name>
+	<pose>1.7 -1.4 0 0 0 0</pose>
+	<uri>model://piedvert</uri>
+    </include>
+    <!-- PiedVert -->
+    <include>
+	<name>piedvert8</name>
+	<pose>1.9 -1.77 0 0 0 0</pose>
+	<uri>model://piedvert</uri>
+    </include>
+
+    <!-- Ampoule depart-->
+    <include>
+	<name>ampoule1</name>
+	<pose>0.035 -1. .055 0 0 0</pose>
+	<uri>model://ampoule</uri>
+    </include>
+
+    <!-- Ampoule depart-->
+    <include>
+	<name>ampoule2</name>
+	<pose>2.965 -1. .055 0 0 0</pose>
+	<uri>model://ampoule</uri>
+    </include>
+
+    <!-- Ampoule cote-->
+    <include>
+	<name>ampoule3</name>
+	<pose>1.250 -1.95 .055 0 0 0</pose>
+	<uri>model://ampoule</uri>
+    </include>
+
+    <!-- Ampoule cote-->
+    <include>
+	<name>ampoule4</name>
+	<pose>1.750 -1.95 .055 0 0 0</pose>
+	<uri>model://ampoule</uri>
+    </include>
+
     <physics type='ode'>
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1</real_time_factor>
@@ -62,5 +272,6 @@
         <view_controller>orbit</view_controller>
       </camera>
     </gui>
+   
   </world>
 </sdf>
