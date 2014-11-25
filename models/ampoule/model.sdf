@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="ampoule">
+    <link name="link">
+      <inertial>
+	<mass>.058</mass><!--poids d'une balle de tennis FIT: 56,70 gr à 58,5 gr. -->
+        </inertial>
+	<collision name="collision">
+        <geometry>
+          <sphere>
+            <radius>0.033</radius><!-- specification E2015_Rules_EU_EN_final.pdf3 -->
+          </sphere>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <sphere>
+            <radius>0.0335</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Yellow</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+    </model>
+ </sdf>

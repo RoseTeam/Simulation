@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="popcornx5">
+	
+    <include>
+	<self_collide> 1 </self_collide>
+	<name>pop1</name>
+	<pose>0 0 0 0 0 0</pose>
+	<uri>model://popcorn</uri>
+    </include>
+    <include>
+	<name>pop2</name>
+	<pose>0 0 .04 0 0 0</pose>
+	<uri>model://popcorn</uri>
+    </include>
+    <include>
+	<name>pop3</name>
+	<pose>0 0 .08 0 0 0</pose>
+	<uri>model://popcorn</uri>
+    </include>
+    <include>
+	<name>pop4</name>
+	<pose>0 0 .12 0 0 0</pose>
+	<uri>model://popcorn</uri>
+    </include>
+    <include>
+	<self_collide> 1 </self_collide>
+	<name>pop5</name>
+	<pose>0 0 .16 0 0 0</pose>
+	<uri>model://popcorn</uri>
+    </include>
+    
+  </model>
+
+ </sdf>

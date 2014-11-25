@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="popcorn">
+    <link name="link">
+      <self_collide> 1 </self_collide>
+
+      <inertial>
+	<mass>.02</mass>
+        </inertial>
+	<collision name="collision">
+        <geometry>
+          <sphere>
+            <radius>0.02</radius><!-- specification E2015_Rules_EU_EN_final.pdf3 -->
+          </sphere>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <sphere>
+            <radius>0.02</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <script>
+	    <!-- bille de Polystyren -->
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/White</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+    </model>
+ </sdf>
