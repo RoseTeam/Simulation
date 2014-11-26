@@ -7,13 +7,13 @@ models/
 	Contient le fichier de modèle du robot (rosebot) et les divers objets de la table de jeu : ampoule, pieds, claps etc.
 
 plugins/
-	modules de controle de la simulation.
+	modules de contrôle de la simulation (interface avec le code embarqué du robot etc.)
 
 #####################
-** Instaler Gazebo **
+** Installer Gazebo **
 #####################
 
-gazebo s'intalle sous Linux/Ubuntu (pas de version windows). 
+gazebo s'installe sous Linux/Ubuntu (pas de version windows). 
 Il est conseillé d'être sous Ubuntu trusty 14.04
 Installation facile décrite ici :
 http://gazebosim.org/tutorials?tut=install
