@@ -30,14 +30,14 @@
 	</visual>
       </link>
       <joint type="revolute" name="hinge">
-	<pose>0 0 0 0 -1.91 0</pose>
+	<pose>0 0 0 0 -2.007 0</pose><!-- 2.007 rad = 115 degres-->
 	<child>clap</child>
 	<parent>world</parent>
 	<axis>
 	   <xyz>0 1 0</xyz>
 	   <limit>
 		<upper>0</upper>
-		<lower>-1.91</lower>
+		<lower>-2.007</lower>
 	   </limit>
 	</axis>
 	

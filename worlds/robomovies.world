@@ -91,38 +91,38 @@
     <!-- Clap Jaune -->
     <include>
 	<name>clap_jaune1</name>
-	<pose>.250 -2.015 .1 0 -1.91 0</pose>
+	<pose>.260 -2. .101 0 0 0</pose>
 	<uri>model://clap_jaune</uri>
     </include>
     <!-- Clap Jaune -->
     <include>
 	<name>clap_jaune1</name>
-	<pose>.850 -2.015 .1 0 -1.91 0</pose>
+	<pose>.860 -2. .101 0 0 0</pose>
 	<uri>model://clap_jaune</uri>
     </include>
     <!-- Clap Jaune -->
     <include>
 	<name>clap_jaune1</name>
-	<pose>2.450 -2.015 .1 0 -1.91 3.1415</pose>
+	<pose>2.450 -2.03 .101 0 0 3.1415</pose>
 	<uri>model://clap_jaune</uri>
     </include>
 
     <!-- Clap Vert -->
     <include>
 	<name>clap_vert1</name>
-	<pose>2.750 -2.015 .1 0 -1.91 3.1415</pose>
+	<pose>2.750 -2.03 .101 0 0 3.1415</pose>
 	<uri>model://clap_vert</uri>
     </include>
     <!-- Clap Vert -->
     <include>
 	<name>clap_vert2</name>
-	<pose>2.150 -2.015 .1 0 -1.91 3.1415</pose>
+	<pose>2.150 -2.03 0.101 0 0 3.1415</pose>
 	<uri>model://clap_vert</uri>
     </include>
     <!-- Clap Vert -->
     <include>
 	<name>clap_vert3</name>
-	<pose>0.550 -2.015 .1 0 -1.91 0.</pose>
+	<pose>0.550 -2 .101 0 0 0.</pose>
 	<uri>model://clap_vert</uri>
     </include>
 
