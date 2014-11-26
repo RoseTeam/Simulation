@@ -15,8 +15,8 @@
  *
 */
 #include <boost/bind.hpp>
-#include <gazebo/physics/physics.hh>
 #include <gazebo/gazebo.hh>
+#include <gazebo/physics/physics.hh>
 #include <gazebo/common/common.hh>
 #include <stdio.h>
 
@@ -24,7 +24,7 @@ namespace gazebo
 {
   class ModelDrive : public ModelPlugin
   {
-    public: void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
+    public: void Load(physics::ModelPtr _parent, sdf::ElementPtr /*_sdf*/)
     {
       // Store the pointer to the model
       this->model = _parent;
@@ -37,17 +37,7 @@ namespace gazebo
       // Get the right and left doors, and the lift
       rightWheel_ = model->GetLink("right_wheel");
       leftWheel_  = model->GetLink("left_wheel");
-
-       if (_sdf->HasElement("torque"))
-         this->torque_ = _sdf->GetElement("torque")->GetValueDouble();
-       else
-       {
-         gzwarn << "No torque value set for the DiffDrive plugin.\n";
-         this->torque_ = 5.0;
-       }
-
-
-      /*
+ 	/*
       // Get the first contact sensor
       contact_ = (Geom*)World::Instance()->GetEntityByName("contact::body::COM_Entity::geom");
       contact_->SetContactsEnabled(true);
@@ -68,15 +58,14 @@ namespace gazebo
     public: void OnUpdate(const common::UpdateInfo & /*_info*/)
     {
       // Apply a small linear velocity to the model.
-    	math::Vector3 tor(0, 0., torque_);
+    	math::Vector3 tor(0, 0, -0.2);
     	this->leftWheel_->AddRelativeTorque(tor);
-    	this->rightWheel_->AddRelativeTorque(tor);
+    	this->rightWheel_->AddRelativeTorque(-tor);
     	forward_ = true;
     }
 
     private: 
 		bool forward_;
-		double torque_;
 		physics::LinkPtr rightWheel_, leftWheel_;
 		physics::ModelPtr model;    // Pointer to the model
 

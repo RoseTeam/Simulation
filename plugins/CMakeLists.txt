@@ -11,12 +11,5 @@ endif()
 include_directories(${GAZEBO_INCLUDE_DIRS})
 link_directories(${GAZEBO_LIBRARY_DIRS})
 
-
-set (plugins
-	rosebot_control)
-
-foreach (src ${plugins})
-  	add_library(${src} SHARED ${src}.cc)
-	target_link_libraries(${src} ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
-	
-endforeach (src ${plugins})
+add_library(rosebot_control SHARED rosebot_control.cc)
+target_link_libraries(rosebot_control ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
