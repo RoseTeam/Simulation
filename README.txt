@@ -18,7 +18,7 @@ Il est conseillé d'être sous Ubuntu trusty 14.04
 Installation facile décrite ici :
 http://gazebosim.org/tutorials?tut=install
 
-Gazebo centralise les objets des la silumation dans ~/.gazebo
+Gazebo centralise les fichiers d'objets pour la simulation dans ~/.gazebo/
 
 #####################
 ** Lancer Gazebo **
