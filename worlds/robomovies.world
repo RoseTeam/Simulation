@@ -96,13 +96,13 @@
     </include>
     <!-- Clap Jaune -->
     <include>
-	<name>clap_jaune1</name>
+	<name>clap_jaune2</name>
 	<pose>.860 -2. .101 0 0 0</pose>
 	<uri>model://clap_jaune</uri>
     </include>
     <!-- Clap Jaune -->
     <include>
-	<name>clap_jaune1</name>
+	<name>clap_jaune3</name>
 	<pose>2.450 -2.03 .101 0 0 3.1415</pose>
 	<uri>model://clap_jaune</uri>
     </include>
