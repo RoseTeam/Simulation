@@ -17,7 +17,9 @@ fi
 
 
 GAZEBO_PLUGIN_DIR="$GAZEBO_HOME_DIR"plugins/
+[ ! -d $GAZEBO_PLUGIN_DIR ] && mkdir -p $GAZEBO_PLUGIN_DIR
 GAZEBO_MODELS_DIR="$GAZEBO_HOME_DIR"models/
+[ ! -d $GAZEBO_MODELS_DIR ] && mkdir -p $GAZEBO_MODELS_DIR
 
 echo
 echo "link to models"
