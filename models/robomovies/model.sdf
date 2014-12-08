@@ -47,7 +47,7 @@
           <geometry>
             <mesh>
 		<scale>0.001 0.001 0.001</scale>
-		<uri>file://models/robomovies/meshes/table.dae</uri>
+		<uri>model://robomovies/meshes/table.dae</uri>
             </mesh>
           </geometry>
 	<surface>
@@ -63,7 +63,7 @@
           <geometry>
             <mesh>
 		<scale>0.001 0.001 0.001</scale>
-		<uri>file://models/robomovies/meshes/table.dae</uri>
+		<uri>model://robomovies/meshes/table.dae</uri>
 	    </mesh>
           </geometry>
         </visual>

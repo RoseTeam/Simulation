@@ -10,7 +10,7 @@
 	  <geometry>
 	    <mesh>
 		<scale>0.001 0.001 0.001</scale>
-		<uri>file://models/clap_jaune/meshes/clap.dae</uri>
+		<uri>model://clap_jaune/meshes/clap.dae</uri>
 	    </mesh>
 	  </geometry>
 	</collision>
@@ -18,7 +18,7 @@
 	  <geometry>
 	    <mesh>
 		<scale>0.001 0.001 0.001</scale>
-		<uri>file://models/clap_jaune/meshes/clap.dae</uri>
+		<uri>model://clap_jaune/meshes/clap.dae</uri>
 	    </mesh>
 	  </geometry>
         <material>

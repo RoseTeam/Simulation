@@ -18,7 +18,7 @@
 	  <geometry>
 	    <mesh>
 		<scale>0.001 0.001 0.001</scale>
-		<uri>file://models/gobelet/meshes/gobelet.dae</uri>
+		<uri>model://gobelet/meshes/gobelet.dae</uri>
 	    </mesh>
 	  </geometry>
 	</collision>
@@ -27,7 +27,7 @@
 	  <geometry>
 	    <mesh>
 		<scale>0.001 0.001 0.001</scale>
-		<uri>file://models/gobelet/meshes/gobelet.dae</uri>
+		<uri>model://gobelet/meshes/gobelet.dae</uri>
 	    </mesh>
 	  </geometry>
         <material>

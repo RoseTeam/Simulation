@@ -17,7 +17,7 @@
 	  <geometry>
 	    <mesh>
 		<scale>0.001 0.001 0.001</scale>
-		<uri>file://models/piedvert/meshes/pied.dae</uri>
+		<uri>model://piedvert/meshes/pied.dae</uri>
 	    </mesh>
 	  </geometry>
 	</collision>
@@ -25,7 +25,7 @@
 	  <geometry>
 	    <mesh>
 		<scale>0.001 0.001 0.001</scale>
-		<uri>file://models/piedvert/meshes/pied.dae</uri>
+		<uri>model://piedvert/meshes/pied.dae</uri>
 	    </mesh>
 	  </geometry>
         <material>
