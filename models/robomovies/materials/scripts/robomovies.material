@@ -18,6 +18,46 @@ material Robomovies/Floor
   }
 }
 
+material Robomovies/Intel
+{
+  technique
+  {
+    pass
+    {
+      ambient 1.0 1.0 1.0 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 0.2 0.2 0.2 1.0 12.5
+
+      texture_unit
+      {
+        scale 1 1
+        texture intel_inside.jpg
+        filtering trilinear
+      }
+    }
+  }
+}
+
+material Robomovies/1001piles
+{
+  technique
+  {
+    pass
+    {
+      ambient 1.0 1.0 1.0 1.0
+      diffuse 1.0 1.0 1.0 1.0
+      specular 0.2 0.2 0.2 1.0 12.5
+
+      texture_unit
+      {
+        scale 1 1
+        texture 1001_piles.jpg
+        filtering trilinear
+      }
+    }
+  }
+}
+
 material Robomovies/FieldBorder
 {
   technique
