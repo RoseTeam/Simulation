@@ -1,18 +1,18 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
   <model name="gobelet">
-	
 	<link name="link">
-           <inertial>
-	<mass>.05</mass>
-          <inertia>
-            <ixx>0.00058</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0.00058</iyy>
-            <iyz>0</iyz>
-            <izz>0.00019</izz>
-          </inertia>
+       <inertial>
+          <pose>0 0 0.078 0 0 0</pose>
+		  <mass>.03</mass>
+		  <inertia>
+			<ixx>0.000082165</ixx>
+		  	<ixy>0</ixy>
+		  	<ixz>0</ixz>
+		  	<iyy>0.000082165</iyy>
+		  	<iyz>0</iyz>
+		  	<izz>0.00003787</izz>
+		  </inertia>
         </inertial>
 	<collision name="collision">
 	  <geometry>
@@ -59,5 +59,4 @@
 		<uri>model://popcorn</uri>
 	    </include>
     </model>
-
  </sdf>

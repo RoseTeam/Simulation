@@ -2,9 +2,19 @@
 <sdf version="1.5">
   <model name="ampoule">
     <link name="link">
+      <!--poids d'une balle de tennis FIT: 56,70 gr à 58,5 gr. -->
       <inertial>
-	<mass>.058</mass><!--poids d'une balle de tennis FIT: 56,70 gr à 58,5 gr. -->
-        </inertial>
+		<mass>.058</mass>
+	    <inertia>
+			<!--2/3mr^2 pour une sphere creuse-->
+            <ixx>0.00004339</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00004339</iyy>
+            <iyz>0</iyz>
+            <izz>0.00004339</izz>
+        </inertia>
+      </inertial>
 	<collision name="collision">
         <geometry>
           <sphere>

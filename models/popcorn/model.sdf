@@ -1,11 +1,20 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
+  <!--une balle de ping pong pèse 2,7 g pour un rayon de 20mm-->
   <model name="popcorn">
     <link name="link">
-      <self_collide> 1 </self_collide>
-
+      <self_collide>1</self_collide>
       <inertial>
-	<mass>.02</mass>
+		<mass>.0027</mass>
+	    <inertia>
+			<!--2/3mr^2 pour une sphere creuse-->
+            <ixx>0.00000072</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00000072</iyy>
+            <iyz>0</iyz>
+            <izz>0.00000072</izz>
+          </inertia>
         </inertial>
 	<collision name="collision">
         <geometry>
@@ -22,7 +31,7 @@
         </geometry>
         <material>
           <script>
-	    <!-- bille de Polystyren -->
+	    <!-- balle de ping pong -->
             <uri>file://media/materials/scripts/gazebo.material</uri>
             <name>Gazebo/White</name>
           </script>

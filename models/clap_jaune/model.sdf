@@ -2,10 +2,19 @@
 <sdf version="1.5">
   <model name="clap_jaune">
     <link name="clap">
-        <self_collide>1</self_collide>
-        <inertial>
-	  <mass>30.39</mass>
-	</inertial>
+      <self_collide>1</self_collide>
+      <inertial>
+		<pose>-0.047 -0.015 0.065 0 0 0</pose>
+		<mass>0.15</mass>
+        <inertia>
+            <ixx>0.0002222088631592061</ixx>
+            <ixy>0.00009576025452225838</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00026807677377627993</iyy>
+            <iyz>0</iyz>
+            <izz>0.00006835231764351083</izz>
+        </inertia>
+	  </inertial>
 	<collision name="collision">
 	  <geometry>
 	    <mesh>
