@@ -40,6 +40,23 @@
           </script>
         </material>
       </visual>
+	  <visual name="pub_1001_piles">
+	    <pose>1.5 0 0.001 0 0 1.5707</pose>
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>1.0 1.0</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://robomovies/materials/scripts/</uri>
+            <uri>model://robomovies/materials/textures/</uri>
+            <name>Robomovies/Intel</name>
+          </script>
+        </material>
+      </visual>
     </link>
     <!-- Robomovies Arena in 3D -->
       <link name="relief">
@@ -61,14 +78,13 @@
 	</surface>
 	</collision>
 	<visual name="visual">
-          <geometry>
-            <mesh>
-		<scale>0.001 0.001 0.001</scale>
-		<uri>model://robomovies/meshes/table.dae</uri>
-	    </mesh>
-          </geometry>
-        </visual>
-	
-      </link>
+      <geometry>
+        <mesh>
+	<scale>0.001 0.001 0.001</scale>
+	<uri>model://robomovies/meshes/table.dae</uri>
+    </mesh>
+      </geometry>
+    </visual> 
+     </link>
   </model>
  </sdf>
