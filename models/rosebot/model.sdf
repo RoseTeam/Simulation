@@ -153,8 +153,7 @@
         </material>
       </visual>
     </link>
-    <joint type="revolute" name="left_wheel_hinge">
-      <pose>0 0 0 0 0 0</pose>
+    <joint name="left_wheel_hinge" type="revolute">
       <child>left_wheel</child>
       <parent>chassis</parent>
       <axis>
@@ -162,8 +161,7 @@
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
     </joint>
-    <joint type="revolute" name="right_wheel_hinge">
-      <pose>0 0 0 0 0 0</pose>
+    <joint name="right_wheel_hinge" type="revolute">
       <child>right_wheel</child>
       <parent>chassis</parent>
       <axis>
@@ -171,8 +169,15 @@
         <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
     </joint>
-    <plugin name="rosebot_control" filename="plugins/librosebot_control.so">
-      <torque>.1</torque>
-    </plugin>
+	<plugin name="rosebot_gazebo" filename="libgazebo_ros_diff_drive.so">
+		<updateRate>100</updateRate>
+		<leftJoint>left_wheel_hinge</leftJoint>
+		<rightJoint>right_wheel_hinge</rightJoint>
+		<wheelAcceleration>0</wheelAcceleration>
+	    <wheelDiameter>0.1</wheelDiameter>
+		<wheelTorque>5.0</wheelTorque>
+		<publishWheelTF>1</publishWheelTF>
+	</plugin>
+
   </model>
 </sdf>

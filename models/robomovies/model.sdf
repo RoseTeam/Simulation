@@ -19,7 +19,7 @@
             </ode>
           </friction>
           <contact>
-              <ode/>
+           <ode/>
           </contact>
           <bounce/>
         </surface>
@@ -64,8 +64,8 @@
         <collision name="collision">
           <geometry>
             <mesh>
-		<scale>0.001 0.001 0.001</scale>
-		<uri>model://robomovies/meshes/table.dae</uri>
+				<scale>0.001 0.001 0.001</scale>
+				<uri>model://robomovies/meshes/table.dae</uri>
             </mesh>
           </geometry>
 	<surface>
