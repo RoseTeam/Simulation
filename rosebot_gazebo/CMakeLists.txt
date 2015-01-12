@@ -6,7 +6,8 @@ project(rosebot_gazebo)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp 
-  gazebo_ros 
+  gazebo_ros
+  rospy
 )
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system)

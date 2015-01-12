@@ -88,7 +88,9 @@ void GazeboRosDiffDrive::Load ( physics::ModelPtr model, sdf::ElementPtr _sdf )
 
     //gazebo_ros_->getParameter<double> ( wheel_separation_, "wheelSeparation", 0.34 );
     gazebo_ros_->getParameter<double> ( wheel_diameter_, "wheelDiameter", 0.15 );
-    gazebo_ros_->getParameter<double> ( wheel_accel, "wheelAcceleration", 0.0 );
+    gazebo_ros_->getParameter<double> ( wheel_accel_, "wheelAcceleration", 0.0 );
+    wheel_accel_ /= wheel_diameter_ / 2.;// from m/s to rad/s
+	ROS_INFO("Calc'ed Wheel accel %lf",wheel_accel_);
     gazebo_ros_->getParameter<double> ( wheel_torque, "wheelTorque", 5.0 );
     gazebo_ros_->getParameter<double> ( update_rate_, "updateRate", 100.0 );
 	
@@ -206,10 +208,14 @@ void GazeboRosDiffDrive::publishWheelTF()
 void GazeboRosDiffDrive::UpdateChild()
 {
   
-    if ( odom_source_ == ENCODER ) UpdateOdometryEncoder();
+    if ( odom_source_ == ENCODER ) 
+		UpdateOdometryEncoder();
+
     common::Time current_time = parent->GetWorld()->GetSimTime();
     double seconds_since_last_update = ( current_time - last_update_time_ ).Double();
-    if ( seconds_since_last_update > update_period_ ) {
+    
+	if ( seconds_since_last_update > update_period_ )
+	{
         if (this->publish_tf_) publishOdometry ( seconds_since_last_update );
         if ( publishWheelTF_ ) publishWheelTF();
         if ( publishWheelJointState_ ) publishWheelJointState();
@@ -219,38 +225,43 @@ void GazeboRosDiffDrive::UpdateChild()
 
         double current_speed[2];
 
-        current_speed[LEFT] = joints_[LEFT]->GetVelocity ( 0 )   * ( wheel_diameter_ / 2.0 );
-        current_speed[RIGHT] = joints_[RIGHT]->GetVelocity ( 0 ) * ( wheel_diameter_ / 2.0 );
+        current_speed[LEFT] = joints_[LEFT]->GetVelocity ( 0 );
+        current_speed[RIGHT] = joints_[RIGHT]->GetVelocity ( 0 );
 
-	double const* wheel_speed_array;
+		double const* wheel_speed_array;
 
-    if ( wheel_accel == 0 ||
-            ( fabs( wheel_speed_[LEFT]  - current_speed[LEFT] ) < 0.01 ) ||
-            ( fabs( wheel_speed_[RIGHT] - current_speed[RIGHT]) < 0.01 ) ) 
-	{
-            //if max_accel == 0, or target speed is reached
-		wheel_speed_array = wheel_speed_;
+		if ( wheel_accel_ == 0
+		//	||	( wheel_speed_[LEFT]  - current_speed[LEFT] ) < 0.01 ) ||
+		//        ( fabs( wheel_speed_[RIGHT] - current_speed[RIGHT]) < 0.01 ) 
+			)
+		{
+		    //if max_accel == 0, or target speed is reached
+			wheel_speed_instr_[LEFT] = wheel_speed_[LEFT];
+			wheel_speed_instr_[RIGHT] = wheel_speed_[RIGHT];
+			//ROS_INFO("actual wheel speed = issued wheel speed= %lf", current_speed[LEFT]);
+			//ROS_INFO("actual wheel speed = issued wheel speed= %lf", current_speed[RIGHT]);
 
-    } 
-	else 
-	{
-            if ( wheel_speed_[LEFT]>=current_speed[LEFT] )
-                wheel_speed_instr_[LEFT]+=fmin ( wheel_speed_[LEFT]-current_speed[LEFT],  wheel_accel * seconds_since_last_update );
-            else
-                wheel_speed_instr_[LEFT]+=fmax ( wheel_speed_[LEFT]-current_speed[LEFT], -wheel_accel * seconds_since_last_update );
 
-            if ( wheel_speed_[RIGHT]>current_speed[RIGHT] )
-                wheel_speed_instr_[RIGHT]+=fmin ( wheel_speed_[RIGHT]-current_speed[RIGHT], wheel_accel * seconds_since_last_update );
-            else
-                wheel_speed_instr_[RIGHT]+=fmax ( wheel_speed_[RIGHT]-current_speed[RIGHT], -wheel_accel * seconds_since_last_update );
+		} 
+		else 
+		{
+	        if ( wheel_speed_[LEFT]>=current_speed[LEFT] )
+	            wheel_speed_instr_[LEFT]+=fmin ( wheel_speed_[LEFT]-current_speed[LEFT],  wheel_accel_ * seconds_since_last_update );
+	        else
+	            wheel_speed_instr_[LEFT]+=fmax ( wheel_speed_[LEFT]-current_speed[LEFT], -wheel_accel_ * seconds_since_last_update );
 
-		// ROS_INFO("actual wheel speed = %lf, issued wheel speed= %lf", current_speed[LEFT], wheel_speed_[LEFT]);
-		// ROS_INFO("actual wheel speed = %lf, issued wheel speed= %lf", current_speed[RIGHT],wheel_speed_[RIGHT]);
-		wheel_speed_array = wheel_speed_instr_;
+	        if ( wheel_speed_[RIGHT]>current_speed[RIGHT] )
+	            wheel_speed_instr_[RIGHT]+=fmin ( wheel_speed_[RIGHT]-current_speed[RIGHT], wheel_accel_ * seconds_since_last_update );
+	        else
+	            wheel_speed_instr_[RIGHT]+=fmax ( wheel_speed_[RIGHT]-current_speed[RIGHT], -wheel_accel_ * seconds_since_last_update );
+
+			//ROS_INFO("actual wheel speed = %lf, issued wheel speed= %lf", current_speed[LEFT], wheel_speed_[LEFT]);
+			//ROS_INFO("actual wheel speed = %lf, issued wheel speed= %lf", current_speed[RIGHT],wheel_speed_[RIGHT]);
+			wheel_speed_instr_;
         }
 
-	joints_[LEFT] ->SetVelocity ( 0, wheel_speed_array[LEFT]  / ( wheel_diameter_ / 2.0 ) );
-	joints_[RIGHT]->SetVelocity ( 0, wheel_speed_array[RIGHT] / ( wheel_diameter_ / 2.0 ) );
+		joints_[LEFT] ->SetVelocity ( 0, wheel_speed_instr_[LEFT] );
+		joints_[RIGHT]->SetVelocity ( 0, wheel_speed_instr_[RIGHT] );
 
         last_update_time_+= common::Time ( update_period_ );
     }
@@ -273,8 +284,8 @@ void GazeboRosDiffDrive::getWheelVelocities()
     double vr = x_;
     double va = rot_;
 
-    wheel_speed_[LEFT]  = vr + va * wheel_separation_ / 2.0;
-    wheel_speed_[RIGHT] = vr - va * wheel_separation_ / 2.0;
+    wheel_speed_[LEFT]  = (vr + va * wheel_separation_ / 2.0) / (wheel_diameter_ / 2.0);
+    wheel_speed_[RIGHT] = (vr - va * wheel_separation_ / 2.0) / (wheel_diameter_ / 2.0);
 }
 
 void GazeboRosDiffDrive::cmdVelCallback ( const geometry_msgs::Twist::ConstPtr& cmd_msg )
