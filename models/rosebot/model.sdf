@@ -6,63 +6,75 @@
       <inertial>
         <mass>5.67</mass>
         <inertia>
-          <ixx>0.07</ixx>
-          <iyy>0.08</iyy>
-          <izz>0.10</izz>
+          <ixx>1</ixx>
+          <iyy>1</iyy>
+          <izz>0.8</izz>
           <ixy>0</ixy>
           <ixz>0</ixz>
           <iyz>0</iyz>
         </inertia>
       </inertial>
-      <collision name="collision">
+      <collision name="chassis_collision">
         <geometry>
           <box>
             <size>0.2 0.2 0.3</size>
           </box>
         </geometry>
       </collision>
-      <collision name="castor_collision">
-        <pose>-0.1 0 -0.12 0 0 0</pose>
-        <geometry>
-          <sphere>
-            <radius>0.04</radius>
-          </sphere>
-        </geometry>
-        <surface>
-          <friction>
-            <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
-              <slip1>1.0</slip1>
-              <slip2>1.0</slip2>
-            </ode>
-          </friction>
-        </surface>
-      </collision>
-      <visual name="visual">
+      <visual name="chassis_visual">
         <geometry>
           <box>
             <size>0.2 0.2 0.3</size>
           </box>
         </geometry>
-      </visual>
-      <visual name="castor_visual">
-        <pose>-0.1 0 -0.12 0 0 0</pose>
-        <geometry>
-          <sphere>
-            <radius>0.04</radius>
-          </sphere>
-        </geometry>
-        <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/FlatBlack</name>
-          </script>
-        </material>
       </visual>
     </link>
+    <link name="roue_folle">
+	  <pose>-0.15 0 .04 0 0 0</pose>
+      <inertial>
+        <mass>3</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <iyy>1</iyy>
+          <izz>1</izz>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+        </inertia>
+      </inertial>
+	  <collision name="castor_collision">
+	    <geometry>
+	      <sphere>
+	        <radius>0.04</radius>
+	      </sphere>
+	    </geometry>
+	    <surface>
+	      <friction>
+	        <ode>
+	          <mu>0</mu>
+	          <mu2>0</mu2>
+	          <slip1>1.0</slip1>
+	          <slip2>1.0</slip2>
+	        </ode>
+	      </friction>
+	    </surface>
+	  </collision>
+	  <visual name="castor_visual">
+	    <geometry>
+	      <sphere>
+	        <radius>0.04</radius>
+	      </sphere>
+	    </geometry>
+	    <material>
+	      <script>
+	        <uri>file://media/materials/scripts/gazebo.material</uri>
+	        <name>Gazebo/FlatBlack</name>
+	      </script>
+	    </material>
+	  </visual>
+    </link>
     <link name="right_wheel">
-      <pose>0.05 -.115 0.05 0 1.5707 1.5707</pose>
+      <pose>0.0 -.115 0.05 0 1.5707 1.5707</pose>
       <inertial>
         <mass>1.5</mass>
         <inertia>
@@ -108,7 +120,7 @@
       </visual>
     </link>
     <link name="left_wheel">
-      <pose>0.05 .115 0.05 0 1.5707 1.5707</pose>
+      <pose>0.0 .115 0.05 0 1.5707 1.5707</pose>
       <inertial>
         <mass>1.5</mass>
         <inertia>
@@ -153,6 +165,18 @@
         </material>
       </visual>
     </link>
+    <joint name="attache_roue_folle" type="revolute">
+      <child>roue_folle</child>
+      <parent>chassis</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+	   <limit>
+		<upper>0</upper>
+		<lower>0</lower>
+	   </limit>
+      </axis>
+    </joint>
     <joint name="left_wheel_hinge" type="revolute">
       <child>left_wheel</child>
       <parent>chassis</parent>
@@ -173,10 +197,17 @@
 		<updateRate>100</updateRate>
 		<leftJoint>left_wheel_hinge</leftJoint>
 		<rightJoint>right_wheel_hinge</rightJoint>
-		<wheelAcceleration>0</wheelAcceleration>
+		<wheelAcceleration>0.</wheelAcceleration><!--accel m/s/s-->
 	    <wheelDiameter>0.1</wheelDiameter>
 		<wheelTorque>5.0</wheelTorque>
-		<publishWheelTF>1</publishWheelTF>
+		<updateRate>50</updateRate>
+		<robotBaseFrame>chassis</robotBaseFrame>
+		<commandTopic>cmd_vel</commandTopic>
+    	<odometryTopic>odom</odometryTopic>
+		<!--
+    	<odometryFrame>chassis</odometryFrame>
+		-->
+		<publishWheelTF>false</publishWheelTF>
 	</plugin>
 
   </model>
