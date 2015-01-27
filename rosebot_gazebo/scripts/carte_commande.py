@@ -105,16 +105,6 @@ class MainWindow(QtGui.QMainWindow):
         self.pose2d.x = self.x*.01#(1-self.y) * (x_max - x_min) + x_min
         self.pose2d.y = self.y*.01#
         self.pose2d.theta = 0
-        """        
-        if self.twist.linear.x > x_max:
-            self.twist.linear.x = x_max
-        if self.twist.linear.x < x_min:
-            self.twist.linear.x = x_min
-        if self.twist.angular.z > r_max:
-            self.twist.angular.z = r_max
-        if self.twist.angular.z < r_min:
-            self.twist.angular.z = r_min
-        """
         self.pub_twist.publish( self.pose2d )
         
 ##########################################################################
