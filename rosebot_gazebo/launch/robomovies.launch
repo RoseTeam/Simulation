@@ -1,7 +1,7 @@
+<?xml version="1.0"?>
 <launch>
 
-  <include file="$(find rosebot_description)/launch/rosebot.launch" />
-    
+  
   <!-- these are the arguments you can pass this launch file, for example paused:=true -->
   <arg name="paused" 	default="false"/>
   <arg name="use_sim_time" default="true"/>
@@ -10,6 +10,9 @@
   <arg name="debug" 	default="false"/>
   <arg name="verbose" 	default="false"/>
   <arg name="vide" 		default="true"/>
+
+  <arg name="robot" 		default="false"/>
+  <arg name="cmd" 		    default="true"/>
 
   <arg unless="$(arg vide)" name="world_name" value="$(find rosebot_gazebo)/worlds/robomovies.world"/>
   <arg 	   if="$(arg vide)" name="world_name" value="$(find rosebot_gazebo)/worlds/robomovies_vide.world"/>
@@ -32,6 +35,14 @@
   <!-- start gazebo server-->
   <node name="gazebo" pkg="gazebo_ros" type="$(arg script_type)" respawn="false" output="screen"
 	args="$(arg command_arg1) $(arg command_arg2) $(arg command_arg3) $(arg world_name)" />
+
+  <node name="carte_commande" pkg="rosebot_description" type="carte_commande.py" output="screen" ns="/rosebot1"/>
+
+  <group if="$(arg robot)">
+    <!--<node name="carte_commande" pkg="rosebot_description" type="gzclient" respawn="false" output="screen"/>-->
+  	<include file="$(find rosebot_description)/launch/rosebot.launch" />
+  </group>
+  
 
   <!-- start gazebo client -->
   <group if="$(arg gui)">
