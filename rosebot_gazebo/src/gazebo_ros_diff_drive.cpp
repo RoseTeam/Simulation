@@ -78,28 +78,47 @@ void GazeboRosDiffDrive::Load ( physics::ModelPtr model, sdf::ElementPtr _sdf )
 
 	this->parent = model;
     gazebo_ros_ = GazeboRosPtr ( new GazeboRos ( model, _sdf, "GazeboRosDiffDrive" ) );
-	
-    gazebo_ros_->getParameter<std::string> ( command_topic_, "commandTopic", "cmd_vel" );
-    gazebo_ros_->getParameter<std::string> ( odometry_topic_, "odometryTopic", "odom" );
-    gazebo_ros_->getParameter<std::string> ( odometry_frame_, "odometryFrame", "odom" );
+
+
+    //gazebo_ros_->getParameter<std::string> ( command_topic_, "commandTopic", "cmd_vel" );
+    //gazebo_ros_->getParameter<std::string> ( odometry_topic_, "odometryTopic", "odom" );
+
+    ros::param::param<std::string> ( this->robot_namespace_ + "/canal_cmd", command_topic_,  "cmd_vel");
+    ros::param::param<std::string> ( this->robot_namespace_ + "/canal_odom", odometry_topic_,  "odom");
+
+    gazebo_ros_->getParameter<std::string> ( odometry_frame_, "odometryFrame", odometry_topic_ );
     gazebo_ros_->getParameter<std::string> ( robot_base_frame_, "robotBaseFrame", "base_footprint" );
     gazebo_ros_->getParameterBoolean ( publishWheelTF_, "publishWheelTF", false );
     gazebo_ros_->getParameterBoolean ( publishWheelJointState_, "publishWheelJointState", false );
 
     //gazebo_ros_->getParameter<double> ( wheel_separation_, "wheelSeparation", 0.34 );
-    gazebo_ros_->getParameter<double> ( wheel_diameter_, "wheelDiameter", 0.15 );
-    gazebo_ros_->getParameter<double> ( wheel_accel_, "wheelAcceleration", 0.0 );
-    wheel_accel_ /= wheel_diameter_ / 2.;// from m/s to rad/s
+    ros::param::param<double> (this->robot_namespace_ + "/wheelRadius", wheel_radius_, 0.035 );
+	ROS_INFO("Read wheel radius %lf",wheel_radius_);
+
+    //gazebo_ros_->getParameter<double> ( wheel_accel_, "wheelAcceleration", 0.0 );
+    ros::param::param<double> (this->robot_namespace_ + "/wheelAcceleration", wheel_accel_, 0. );
+
+	wheel_accel_ /= wheel_radius_;// from m/s to rad/s
 	ROS_INFO("Calc'ed Wheel accel %lf",wheel_accel_);
-    gazebo_ros_->getParameter<double> ( wheel_torque, "wheelTorque", 5.0 );
+	//gazebo_ros_->getParameter<double> ( wheel_torque, "wheelTorque", 5.0 );
+    ros::param::param<double> ( this->robot_namespace_ + "/wheelTorque", wheel_torque,  5. );
+
     gazebo_ros_->getParameter<double> ( update_rate_, "updateRate", 100.0 );
 	
     // Get the right and left wheels and compute the separation from their pose.
     physics::LinkPtr rightWheel = model->GetLink("right_wheel");
     physics::LinkPtr leftWheel  = model->GetLink("left_wheel");
-	wheel_separation_ = (rightWheel->GetWorldCoGPose().pos - leftWheel->GetWorldCoGPose().pos).GetLength();
-	ROS_INFO("Calc'ed Wheel Separation %lf",wheel_separation_);
-	
+    double wheel_sep = (rightWheel->GetWorldCoGPose().pos - leftWheel->GetWorldCoGPose().pos).GetLength();
+
+    //ROS_INFO("Calc'ed Wheel Separation %lf",wheel_sep);
+
+    ros::param::param<double> ( "wheelSeparation", wheel_separation_, .262 );
+	ROS_INFO("Read wheel separation %lf",wheel_separation_);
+
+	if((wheel_sep - wheel_separation_)/wheel_sep > .0001 )
+		ROS_ERROR("wheel separation does not match the one calc'ed from sdf file: %lf vs %lf", wheel_separation_, wheel_sep);
+
+
     std::map<std::string, OdomSource> odomOptions;
     odomOptions["encoder"] = ENCODER;
     odomOptions["world"] = WORLD;
@@ -220,6 +239,10 @@ void GazeboRosDiffDrive::UpdateChild()
         if ( publishWheelTF_ ) publishWheelTF();
         if ( publishWheelJointState_ ) publishWheelJointState();
 
+        //ROS_INFO("UpdateChild v %lf ", x_);
+
+        //ROS_INFO("seconds_since_last_update %lf s", seconds_since_last_update);
+
 		// Update robot in case new velocities have been requested
         getWheelVelocities();
 
@@ -292,13 +315,14 @@ void GazeboRosDiffDrive::getWheelVelocities()
     double vr = x_;
     double va = rot_ * wheel_separation_ * .5;
 
-    desired_wheel_speed_[LEFT]  = (vr - va) / wheel_diameter_ * 2.0;
-    desired_wheel_speed_[RIGHT] = (vr + va) / wheel_diameter_ * 2.0;
+    desired_wheel_speed_[LEFT]  = (vr - va) / wheel_radius_;
+    desired_wheel_speed_[RIGHT] = (vr + va) / wheel_radius_;
 }
 
 void GazeboRosDiffDrive::cmdVelCallback ( const geometry_msgs::Twist::ConstPtr& cmd_msg )
 {
     boost::mutex::scoped_lock scoped_lock ( lock );
+    //ROS_INFO("cmdVelCallback v %lf ", cmd_msg->linear.x);
     x_   = cmd_msg->linear.x;
     rot_ = cmd_msg->angular.z;
 }
@@ -325,14 +349,14 @@ void GazeboRosDiffDrive::UpdateOdometryEncoder()
     double b = wheel_separation_;
 
     // Book: Sigwart 2011 Autonompus Mobile Robots page:337
-    double sl = vl * ( wheel_diameter_ / 2.0 ) * seconds_since_last_update;
-    double sr = vr * ( wheel_diameter_ / 2.0 ) * seconds_since_last_update;
-    double theta = ( sl - sr ) /b;
+    double sl = vl * wheel_radius_ * seconds_since_last_update;
+    double sr = vr * wheel_radius_ * seconds_since_last_update;
+    double theta = ( sl - sr ) / b;
 
 
-    double dx = ( sl + sr ) /2.0 * cos ( pose_encoder_.theta + ( sl - sr ) / ( 2.0*b ) );
-    double dy = ( sl + sr ) /2.0 * sin ( pose_encoder_.theta + ( sl - sr ) / ( 2.0*b ) );
-    double dtheta = ( sl - sr ) /b;
+    double dx = ( sl + sr ) / 2. * cos ( pose_encoder_.theta + ( sl - sr ) / ( 2.0*b ) );
+    double dy = ( sl + sr ) / 2. * sin ( pose_encoder_.theta + ( sl - sr ) / ( 2.0*b ) );
+    double dtheta = ( sl - sr ) / b;
 
     pose_encoder_.x += dx;
     pose_encoder_.y += dy;
@@ -375,8 +399,8 @@ void GazeboRosDiffDrive::publishOdometry ( double step_time )
         // getting data from encoder integration
         qt = tf::Quaternion ( odom_.pose.pose.orientation.x, odom_.pose.pose.orientation.y, odom_.pose.pose.orientation.z, odom_.pose.pose.orientation.w );
         vt = tf::Vector3 ( odom_.pose.pose.position.x, odom_.pose.pose.position.y, odom_.pose.pose.position.z );
-
     }
+
     if ( odom_source_ == WORLD ) {
         // getting data from gazebo world
         math::Pose pose = parent->GetWorldPose();

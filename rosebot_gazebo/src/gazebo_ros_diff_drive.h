@@ -98,7 +98,7 @@ namespace gazebo {
       event::ConnectionPtr update_connection_;
 
       double wheel_separation_;
-      double wheel_diameter_;
+      double wheel_radius_;
       double wheel_torque;
       double desired_wheel_speed_[2]; // in rad/s
       double wheel_accel_; // in rad/s/s

@@ -266,13 +266,8 @@
 	<plugin name="rosebot_gazebo" filename="libgazebo_ros_diff_drive.so">
 		<leftJoint>left_wheel_hinge</leftJoint>
 		<rightJoint>right_wheel_hinge</rightJoint>
-		<wheelAcceleration>0.</wheelAcceleration><!--accel m/s/s valeur de 0 : accel instantanée-->
-	    <wheelDiameter>0.036</wheelDiameter>
-		<wheelTorque>.29</wheelTorque><!--Couple: 3 kg.cm pour le moteur gotronic-->
 		<updateRate>50</updateRate>
 		<robotBaseFrame>chassis</robotBaseFrame>
-		<commandTopic>cmd_vel</commandTopic>
-    	<odometryTopic>odom</odometryTopic>
 		<!--
     	<odometryFrame>chassis</odometryFrame>
 		-->
