@@ -79,12 +79,13 @@ void GazeboRosDiffDrive::Load ( physics::ModelPtr model, sdf::ElementPtr _sdf )
 	this->parent = model;
     gazebo_ros_ = GazeboRosPtr ( new GazeboRos ( model, _sdf, "GazeboRosDiffDrive" ) );
 
+    this->robot_namespace_ = gazebo_ros_->getNameSpace();
 
     //gazebo_ros_->getParameter<std::string> ( command_topic_, "commandTopic", "cmd_vel" );
     //gazebo_ros_->getParameter<std::string> ( odometry_topic_, "odometryTopic", "odom" );
 
-    ros::param::param<std::string> ( this->robot_namespace_ + "/canal_cmd", command_topic_,  "cmd_vel");
-    ros::param::param<std::string> ( this->robot_namespace_ + "/canal_odom", odometry_topic_,  "odom");
+    ros::param::param<std::string> ( this->robot_namespace_ + "canal_cmd", command_topic_,  "cmd_vel");
+    ros::param::param<std::string> ( this->robot_namespace_ + "canal_odom", odometry_topic_,  "odom");
 
     gazebo_ros_->getParameter<std::string> ( odometry_frame_, "odometryFrame", odometry_topic_ );
     gazebo_ros_->getParameter<std::string> ( robot_base_frame_, "robotBaseFrame", "base_footprint" );
@@ -92,18 +93,22 @@ void GazeboRosDiffDrive::Load ( physics::ModelPtr model, sdf::ElementPtr _sdf )
     gazebo_ros_->getParameterBoolean ( publishWheelJointState_, "publishWheelJointState", false );
 
     //gazebo_ros_->getParameter<double> ( wheel_separation_, "wheelSeparation", 0.34 );
-    ros::param::param<double> (this->robot_namespace_ + "/wheelRadius", wheel_radius_, 0.035 );
+    ros::param::param<double> (this->robot_namespace_ + "wheelRadius", wheel_radius_, 0.035 );
 	ROS_INFO("Read wheel radius %lf",wheel_radius_);
 
     //gazebo_ros_->getParameter<double> ( wheel_accel_, "wheelAcceleration", 0.0 );
-    ros::param::param<double> (this->robot_namespace_ + "/wheelAcceleration", wheel_accel_, 0. );
+    ros::param::param<double> (this->robot_namespace_ + "wheelAcceleration", wheel_accel_, 0. );
 
 	wheel_accel_ /= wheel_radius_;// from m/s to rad/s
 	ROS_INFO("Calc'ed Wheel accel %lf",wheel_accel_);
 	//gazebo_ros_->getParameter<double> ( wheel_torque, "wheelTorque", 5.0 );
-    ros::param::param<double> ( this->robot_namespace_ + "/wheelTorque", wheel_torque,  5. );
+    ros::param::param<double> ( this->robot_namespace_ + "wheelTorque", wheel_torque,  5. );
+	ROS_INFO((this->robot_namespace_ + " Wheel Torque %lf").c_str(),wheel_torque);
 
-    gazebo_ros_->getParameter<double> ( update_rate_, "updateRate", 100.0 );
+    ros::param::param<double> (this->robot_namespace_ + "updateRateOdom", update_rate_odom_, 5.0 );
+    ros::param::param<double> (this->robot_namespace_ + "updateRateCmdVel", update_rate_cmdvel_, 20.0 );
+	ROS_INFO("Update rate odom    %lf",update_rate_odom_);
+	ROS_INFO("Update rate cmd vel %lf",update_rate_cmdvel_);
 	
     // Get the right and left wheels and compute the separation from their pose.
     physics::LinkPtr rightWheel = model->GetLink("right_wheel");
@@ -140,9 +145,17 @@ void GazeboRosDiffDrive::Load ( physics::ModelPtr model, sdf::ElementPtr _sdf )
     }
 
     // Initialize update rate stuff
-    if ( this->update_rate_ > 0.0 ) this->update_period_ = 1.0 / this->update_rate_;
-    else this->update_period_ = 0.0;
-    last_update_time_ = parent->GetWorld()->GetSimTime();
+    if ( this->update_rate_odom_ > 0.0 )
+    	this->update_period_odom_ = 1.0 / this->update_rate_odom_;
+    else
+    	this->update_period_odom_ = 0.0;
+
+    if ( this->update_rate_cmdvel_ > 0.0 )
+     	this->update_period_cmdvel_ = 1.0 / this->update_rate_cmdvel_;
+     else
+     	this->update_period_cmdvel_ = 0.0;
+
+    last_update_time_cmdvel_ = last_update_time_odom_ = parent->GetWorld()->GetSimTime();
 
     // Initialize velocity stuff
     desired_wheel_speed_[RIGHT] = 0;
@@ -155,26 +168,24 @@ void GazeboRosDiffDrive::Load ( physics::ModelPtr model, sdf::ElementPtr _sdf )
     if (this->publishWheelJointState_)
     {
         joint_state_publisher_ = gazebo_ros_->node()->advertise<sensor_msgs::JointState>("joint_states", 1000);
-        ROS_INFO("%s: Advertise joint_states!", gazebo_ros_->info());
+        ROS_INFO("%s: Advertise joint_states", gazebo_ros_->info());
     }
 
     transform_broadcaster_ = boost::shared_ptr<tf::TransformBroadcaster>(new tf::TransformBroadcaster());
 
     // ROS: Subscribe to the velocity command topic (usually "cmd_vel")
-    ROS_INFO("%s: Try to subscribe to %s!", gazebo_ros_->info(), command_topic_.c_str());
-
     ros::SubscribeOptions so =
         ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic_, 1,
                 boost::bind(&GazeboRosDiffDrive::cmdVelCallback, this, _1),
                 ros::VoidPtr(), &queue_);
 
     cmd_vel_subscriber_ = gazebo_ros_->node()->subscribe(so);
-    ROS_INFO("%s: Subscribe to %s!", gazebo_ros_->info(), command_topic_.c_str());
+    ROS_INFO("%s: Subscribe to %s", gazebo_ros_->info(), command_topic_.c_str());
 
     if (this->publish_tf_)
     {
       odometry_publisher_ = gazebo_ros_->node()->advertise<nav_msgs::Odometry>(odometry_topic_, 1);
-      ROS_INFO("%s: Advertise odom on %s !", gazebo_ros_->info(), odometry_topic_.c_str());
+      ROS_INFO("%s: Advertise odom on %s", gazebo_ros_->info(), odometry_topic_.c_str());
     }
 
     // start custom queue for diff drive
@@ -231,13 +242,21 @@ void GazeboRosDiffDrive::UpdateChild()
 		UpdateOdometryEncoder();
 
     common::Time current_time = parent->GetWorld()->GetSimTime();
-    double seconds_since_last_update = ( current_time - last_update_time_ ).Double();
+    double seconds_since_last_update_odom = ( current_time - last_update_time_odom_ ).Double();
 
-	if ( seconds_since_last_update > update_period_ )
+	if ( seconds_since_last_update_odom > update_period_odom_ )
 	{
-        if ( publish_tf_) publishOdometry ( seconds_since_last_update );
+        if ( publish_tf_) publishOdometry ( seconds_since_last_update_odom );
         if ( publishWheelTF_ ) publishWheelTF();
         if ( publishWheelJointState_ ) publishWheelJointState();
+
+        last_update_time_odom_ += common::Time ( update_period_odom_ );
+	}
+
+	double seconds_since_last_update_cmdvel = ( current_time - last_update_time_cmdvel_ ).Double();
+
+	if ( seconds_since_last_update_cmdvel > update_period_cmdvel_ )
+	{
 
         //ROS_INFO("UpdateChild v %lf ", x_);
 
@@ -270,7 +289,7 @@ void GazeboRosDiffDrive::UpdateChild()
 			else
 			{
 				double dV = desired_wheel_speed_[leftRight]-current_speed[leftRight];
-				const double dV_max = wheel_accel_ * seconds_since_last_update;
+				const double dV_max = wheel_accel_ * seconds_since_last_update_cmdvel;
 
 				if( fabs(dV) > dV_max)
 				{
@@ -294,7 +313,7 @@ void GazeboRosDiffDrive::UpdateChild()
 								    desired_wheel_speed_[LEFT], desired_wheel_speed_[RIGHT],
 									wheel_speed_instr_[LEFT], wheel_speed_instr_[RIGHT]);
 		*/
-        last_update_time_+= common::Time ( update_period_ );
+        last_update_time_cmdvel_ += common::Time ( update_period_cmdvel_ );
     }
 }
 

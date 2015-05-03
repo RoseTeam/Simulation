@@ -169,7 +169,11 @@ public:
      * returns the initialized created within the constuctor
      * @return rosnode
      **/
-    boost::shared_ptr<ros::NodeHandle>& node();;
+    boost::shared_ptr<ros::NodeHandle>& node();
+
+
+    std::string getNameSpace()const{return namespace_; };
+
     /**
      * returns the initialized within the constuctor
      * @return rosnode

@@ -136,9 +136,12 @@ namespace gazebo {
       bool alive_;
 
       // Update Rate
-      double update_rate_;
-      double update_period_;
-      common::Time last_update_time_;
+      double update_rate_odom_;
+      double update_rate_cmdvel_;
+      double update_period_odom_;
+      double update_period_cmdvel_;
+      common::Time last_update_time_cmdvel_;
+      common::Time last_update_time_odom_;
       
       OdomSource odom_source_;
       geometry_msgs::Pose2D pose_encoder_;
