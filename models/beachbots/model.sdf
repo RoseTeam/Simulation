@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="arene">
+    <static>true</static>
+    <link name="sol">
+      <pose>1 1.5 0.001 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>2.0 3.0</size>
+          </plane>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>100</mu>
+              <mu2>50</mu2>
+            </ode>
+          </friction>
+          <contact>
+           <ode/>
+          </contact>
+          <bounce/>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>2.0 3.0</size>
+          </plane>
+        </geometry>
+      </visual>
+    </link>
+    <!-- Beachbots Arena in 3D -->
+      <link name="table">
+      	<pose>1.19 1.645 .995 1.5707 0 1.5707</pose>
+        <collision name="collision">
+          <geometry>
+            <mesh>
+				<scale>0.001 0.001 0.001</scale>
+				<uri>model://beachbots/meshes/table_collision.dae</uri>
+            </mesh>
+          </geometry>
+	<surface>
+	  <friction>
+	    <ode>
+	      <mu>100</mu>
+	      <mu2>50</mu2>
+	    </ode>
+	  </friction>
+	</surface>
+	</collision>
+	<visual name="visual">
+      <geometry>
+        <mesh>
+		  <scale>0.001 0.001 0.001</scale>
+			<uri>model://beachbots/meshes/table.dae</uri>
+    	</mesh>
+      </geometry>
+    </visual> 
+   </link>
+  </model>
+ </sdf>
