@@ -280,11 +280,11 @@
 	<plugin name="rosebot_gazebo" filename="libgazebo_ros_diff_drive.so">
 		<leftJoint>left_wheel_hinge</leftJoint>
 		<rightJoint>right_wheel_hinge</rightJoint>
-		<updateRate>50</updateRate>
 		<robotBaseFrame>chassis</robotBaseFrame>
 		<!--
     	<odometryFrame>chassis</odometryFrame>
 		-->
+		<publishTF>true</publishTF>
 		<publishWheelTF>false</publishWheelTF>
 	</plugin>
 
