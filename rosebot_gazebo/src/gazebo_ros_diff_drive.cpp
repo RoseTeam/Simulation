@@ -115,10 +115,10 @@ void GazeboRosDiffDrive::Load ( physics::ModelPtr model, sdf::ElementPtr _sdf )
     physics::LinkPtr leftWheel  = model->GetLink("left_wheel");
     double wheel_sep = (rightWheel->GetWorldCoGPose().pos - leftWheel->GetWorldCoGPose().pos).GetLength();
 
-    //ROS_INFO("Calc'ed Wheel Separation %lf",wheel_sep);
+    ROS_INFO("Calc'ed Wheel Separation %lf",wheel_sep);
 
-    ros::param::param<double> ( "wheelSeparation", wheel_separation_, .262 );
-	ROS_INFO("Read wheel separation %lf",wheel_separation_);
+    ros::param::param<double> ( this->robot_namespace_ + "wheelSeparation", wheel_separation_, .252 );
+	ROS_INFO("Read wheel separation %lf", wheel_separation_);
 
 	if((wheel_sep - wheel_separation_)/wheel_sep > .0001 )
 		ROS_ERROR("wheel separation does not match the one calc'ed from sdf file: %lf vs %lf", wheel_separation_, wheel_sep);
