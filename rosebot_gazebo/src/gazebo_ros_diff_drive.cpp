@@ -133,8 +133,8 @@ void GazeboRosDiffDrive::Load ( physics::ModelPtr model, sdf::ElementPtr _sdf )
     joints_.resize ( 2 );
     joints_[LEFT]  = gazebo_ros_->getJoint ( parent, "leftJoint",  "left_joint" );
     joints_[RIGHT] = gazebo_ros_->getJoint ( parent, "rightJoint", "right_joint" );
-    joints_[LEFT] ->SetMaxForce ( 0, wheel_torque );
-    joints_[RIGHT]->SetMaxForce ( 0, wheel_torque );
+    joints_[LEFT] ->SetParam ( "max_force", 0, wheel_torque );
+    joints_[RIGHT]->SetParam ( "max_force", 0, wheel_torque );
 
     this->publish_tf_ = true;
     if (!_sdf->HasElement("publishTf")) {
@@ -370,7 +370,7 @@ void GazeboRosDiffDrive::UpdateOdometryEncoder()
     // Book: Sigwart 2011 Autonompus Mobile Robots page:337
     double sl = vl * wheel_radius_ * seconds_since_last_update;
     double sr = vr * wheel_radius_ * seconds_since_last_update;
-    double theta = ( sl - sr ) / b;
+    //double theta = ( sl - sr ) / b;
 
 
     double dx = ( sl + sr ) / 2. * cos ( pose_encoder_.theta + ( sl - sr ) / ( 2.0*b ) );
@@ -382,7 +382,7 @@ void GazeboRosDiffDrive::UpdateOdometryEncoder()
     pose_encoder_.theta += dtheta;
 
     double w = dtheta/seconds_since_last_update;
-    double v = sqrt ( dx*dx+dy*dy ) /seconds_since_last_update;
+    //double v = sqrt ( dx*dx+dy*dy ) /seconds_since_last_update;
 
     tf::Quaternion qt;
     tf::Vector3 vt;
@@ -403,7 +403,7 @@ void GazeboRosDiffDrive::UpdateOdometryEncoder()
     odom_.twist.twist.linear.y = dy/seconds_since_last_update;
 }
 
-void GazeboRosDiffDrive::publishOdometry ( double step_time )
+void GazeboRosDiffDrive::publishOdometry ( double /*step_time*/ )
 {
     boost::mutex::scoped_lock scoped_lock ( lock );
 
