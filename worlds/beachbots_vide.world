@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<sdf version='1.5'>
+  <world name='default'>
+    <scene>
+      <sky>
+        <clouds>
+          <speed>12</speed>
+        </clouds>
+      </sky>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <!-- A global light source -->
+    <include>
+      <name>soleil</name>
+      <uri>model://sun</uri>
+    </include>
+    <!-- Ground -->
+    <include>
+      <name>terre</name>
+      <uri>model://ground_plane</uri>
+    </include>
+    <!-- Beachbots field -->
+    <include>
+      <name>arene</name>
+      <uri>model://beachbots</uri>
+    </include>
+
+    <!-- Rosebot -->
+    <include>
+		<name>rosebot1</name>
+		<pose>.85 .2 0 0 0 1.5707</pose>
+		<uri>model://rosebot</uri>
+    </include>
+
+    <physics type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <gravity>0 0 -9.8</gravity>
+      <magnetic_field>5.5645e-06 2.28758e-05 -4.23884e-05</magnetic_field>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>1 1.5 3 0 1.57 3.14</pose>
+        <view_controller>orbit</view_controller>
+      </camera>
+    </gui>
+
+  </world>
+</sdf>
