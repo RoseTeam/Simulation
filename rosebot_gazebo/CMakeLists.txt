@@ -84,27 +84,15 @@ catkin_package(
    LIBRARIES
 		gazebo_ros_utils
 		rosebot_gazebo
+
 CATKIN_DEPENDS
-	message_generation
-	gazebo_msgs
 	roscpp
 	rospy
-	nodelet
-	angles
-	std_srvs
 	geometry_msgs
 	sensor_msgs
 	nav_msgs
 	urdf
 	tf
-	tf2_ros
-	dynamic_reconfigure
-	driver_base
-	rosgraph_msgs
-	trajectory_msgs
-	image_transport
-	rosconsole
-	camera_info_manager
 
 DEPENDS 
 	gazebo
@@ -117,10 +105,25 @@ DEPENDS
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-link_directories(${GAZEBO_LIBRARY_DIRS})
 include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
 
-add_definitions(-fPIC) # what is this for?
+# check c++11 / c++0x
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+
+if(COMPILER_SUPPORTS_CXX11)
+    set(CMAKE_CXX_FLAGS "-std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+    set(CMAKE_CXX_FLAGS "-std=c++0x")
+else()
+    message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+
+#add_definitions(-O0 -g3 -Wall -c -fmessage-length=0 -fpermissive -pedantic -pedantic-errors -Wextra -Wsign-compare -fPIC ) # what is this for?
+add_definitions(-O0 -g3 -Wall -c -fmessage-length=0 -fpermissive -Wsign-compare -fPIC ) # what is this for?
+
+link_directories(${GAZEBO_LIBRARY_DIRS})
 
 ## Declare a cpp library
 set (plugins
