@@ -20,6 +20,8 @@
   <arg unless="$(arg vide)" name="world_path" value="$(find rosebot_gazebo)/worlds/$(arg terrain).world"/>
   <arg 	   if="$(arg vide)" name="world_path" value="$(find rosebot_gazebo)/worlds/$(arg terrain)_vide.world"/>
 
+  <rosparam file="$(find rosebot_gazebo)/launch/caracteristiques.yaml" command="load" ns="/rosebot1"/>
+
   <!-- set use_sim_time flag -->
   <group if="$(arg use_sim_time)">
     <param name="/use_sim_time" value="true" />
@@ -39,6 +41,7 @@
     <!--<node name="carte_commande" pkg="rosebot_description" type="gzclient" respawn="false" output="screen"/>-->
   	<include file="$(find rosebot_description)/launch/rosebot.launch">
 		<arg name="carte" value="true"/>
+		<arg name="moteur" value="false"/>
 	</include>
   </group>
 

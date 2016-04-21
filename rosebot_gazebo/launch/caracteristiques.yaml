@@ -1,0 +1,5 @@
+wheelRadius: 0.035
+wheelAcceleration: 0.# accel m/s/s valeur de 0 = accel instantanee
+wheelTorque: 5 #0.29 # en N.m Couple = 3 kg.cm pour le moteur gotronic
+updateRateOdom: 50 # frequence odometrie en Hz simulee par gazebo
+
