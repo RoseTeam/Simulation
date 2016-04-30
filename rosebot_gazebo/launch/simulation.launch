@@ -39,28 +39,23 @@
 		<arg name="carte" value="true"/>
 		<arg name="moteur" value="false"/>
 		<arg name="acc" value="false"/>
-		<arg unless="$(arg gazebo)" name="nav" value="false"/>	
+		<arg name="nav" value="true"/>	
 	</include>
   </group>
 
-  <group unless="$(arg gazebo)">
-	 <node name="mock_navigation" pkg="rosebot_description" type="mock_navigation.py" output="screen" ns="/rosebot1"/>
+
+  <!-- set use_sim_time flag -->
+  <group if="$(arg use_sim_time)">
+	<param name="/use_sim_time" value="true" />
   </group>
 
-  <group if="$(arg gazebo)">
-	  <!-- set use_sim_time flag -->
-	  <group if="$(arg use_sim_time)">
-		<param name="/use_sim_time" value="true" />
-	  </group>
+  <!-- start gazebo server-->
+  <node name="gazebo" pkg="gazebo_ros" type="$(arg script_type)" respawn="false" output="screen"
+	args="$(arg command_arg1) $(arg command_arg2) $(arg command_arg3) $(arg world_path)" />
 
-	  <!-- start gazebo server-->
-	  <node name="gazebo" pkg="gazebo_ros" type="$(arg script_type)" respawn="false" output="screen"
-		args="$(arg command_arg1) $(arg command_arg2) $(arg command_arg3) $(arg world_path)" />
-
-	  <!-- start gazebo client -->
-	  <group if="$(arg gui)">
-		<node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen"/>
-	  </group>
+  <!-- start gazebo client -->
+  <group if="$(arg gui)">
+	<node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen"/>
   </group>
 
   <!-- more default parameters can be changed here -->
