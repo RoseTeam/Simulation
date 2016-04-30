@@ -62,6 +62,7 @@
   <run_depend>nav_msgs</run_depend>
   <run_depend>urdf</run_depend>
   <run_depend>tf</run_depend>
+  <run_depend>rosebot_description</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
